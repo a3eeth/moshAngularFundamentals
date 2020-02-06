@@ -1,27 +1,55 @@
-# Fundamentals
+    ng g c courses -> courses.component.ts
+generates components 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
+    ng g s courses -> courses.services.ts
+generates services
 
-## Development server
+# courses.component.ts
+import crucial services from coupled service class 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+    import { Component } from '@angular/core';
+    import { CoursesService } from './courses.service';
 
-## Code scaffolding
+# configure component declarator
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+    @Component({
+     selector: 'app-this-component',
+     template: '<h2>This template</h2>'
+     )}
+     
+ > backtick to have directives within the template
+     
+     @Component({
+      selector: 'app-this-component',
+      template: `<ul><li *ngFor='let course of courses'>
+                  {{ course }}
+                 </li></ul>'
+     
+# configure export class + constructor with dependency injection
+    export class CourseComponent {
+    courses; //for storing the array
+    //this is a dependency injection
+    constructor(service: CoursesService){
+     this.courses = service.getCourses();
+    }
+    
+# courses.service.ts 
+    export class CoursesService {
+     getCourses(){
+      return ['course_one', 'course_two', 'course_three'];
+     }
+    }
+    
+# app.module.ts
+    @NgModule({
+     declarations: [
+      ...,
+      CoursesComponent,
+      ...
+      ],
+     providers: [
+      ...,
+      CoursesService,
+      ...
+     ]
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
